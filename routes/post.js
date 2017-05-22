@@ -2,9 +2,9 @@ var express = require("express"),
   router = express.Router(),
   mongoose = require("mongoose"), //mongo connection
   bodyParser = require("body-parser"), //parses information from POST
-  methodOverride = require("method-override"); //used to manipulate POST
-var Post = require("../models/posts"),
-  postcontroller = require("../controllers/postController");
+  methodOverride = require("method-override"), //used to manipulate POST
+  Post = require("../models/posts"), //get post model
+  postcontroller = require("../controllers/postController"); //and the post controller
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(
