@@ -13,27 +13,11 @@ var LocalStrategy = require("passport-local").Strategy;
 
 //db connection
 var mongoose = require("mongoose");
-var mongoDB = "mongodb://admin:405343@ds147711.mlab.com:47711/blogdata";
+var mongoDB = creds.mdb;
 mongoose.connect(mongoDB);
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 //db end
-
-passport.use(
-  new LocalStrategy(function(username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user || !!user.validPassword(password)) {
-        return done(null, false, {
-          message: "Incorrect username or password."
-        });
-      }
-      return done(null, user);
-    });
-  })
-);
 
 var index = require("./routes/index");
 var users = require("./routes/users");
@@ -50,26 +34,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(
-  session({
-    secret: "ilovelargelemonypotatoes",
-    name: "cname",
-    resave: false,
-    saveUninitialized: false
-  })
-); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
-
-//check if auth
-app.use(function(req, res, next) {
-  res.locals.login = req.isAuthenticated();
-  next();
-});
 
 app.use("/", index);
-app.use("/users", users);
 app.use("/posts", posts);
 
 // catch 404 and forward to error handler

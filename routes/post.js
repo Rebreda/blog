@@ -20,6 +20,10 @@ router.use(
 
 //build the REST operations at the base for posts
 //this will be accessible from http://127.0.0.1:3000/posts if the default route for / is left unchanged
+router
+  .route("/new")
+  .get(postcontroller.getnewpost)
+  .post(postcontroller.postnewpost);
 
 // route middleware to validate :id
 router.param("id", function(req, res, next, id) {
@@ -40,7 +44,6 @@ router.param("id", function(req, res, next, id) {
           res.json({ message: err.status + " " + err });
         }
       });
-      //if it is found we continue on
     } else {
       //uncomment this next line if you want to see every JSON document response for every GET/PUT/DELETE call
       //console.log(blob);
@@ -53,11 +56,6 @@ router.param("id", function(req, res, next, id) {
 });
 
 router.route("/:id").get(postcontroller.onepost);
-
-router
-  .route("/new")
-  .get(postcontroller.getnewpost)
-  .post(postcontroller.postnewpost);
 
 router
   .route("/")

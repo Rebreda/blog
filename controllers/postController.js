@@ -7,7 +7,6 @@ var express = require("express"),
 
 exports.postlist = function(req, res, next) {
   //retrieve all posts from Monogo
-  var d = new Date();
   Post.find({}, function(err, posts) {
     if (err) {
       return console.error(err);
