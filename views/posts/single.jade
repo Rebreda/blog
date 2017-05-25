@@ -3,3 +3,7 @@ extends ../layout
 block content
     h1= post.title
     p= post.content
+    
+  for tag in post.tags
+      p= tag.type
+      

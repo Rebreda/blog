@@ -21,6 +21,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error: "));
 
 var index = require("./routes/index");
 var users = require("./routes/users");
+var tags = require("./routes/tags");
 var posts = require("./routes/post");
 
 // view engine setup
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", index);
 app.use("/posts", posts);
+app.use("/tags", tags);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

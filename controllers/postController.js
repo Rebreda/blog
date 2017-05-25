@@ -1,4 +1,5 @@
 var Post = require("../models/posts");
+var Tag = require("../models/tags");
 var express = require("express"),
   router = express.Router(),
   mongoose = require("mongoose"), //mongo connection
@@ -33,8 +34,10 @@ exports.newpost = function(req, res) {
   // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
   var post = new Post({
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    tag: typeof req.body.tag === "undefined" ? [] : req.body.tag.split(",")
   });
+  console.log(req.body.tag.split(","));
   //call the create function for our database
   post.save(function(err) {
     if (err) {
@@ -54,10 +57,24 @@ exports.newpost = function(req, res) {
 
 exports.getnewpost = function(req, res, next) {
   //render form
-  res.format({
-    html: function() {
-      res.render("posts/new", {
-        title: "Create a new post!"
+
+  Tag.find({}, function(err, tags) {
+    if (err) {
+      return console.error(err);
+    } else {
+      //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
+      res.format({
+        //HTML response will render the index.jade file in the views/posts folder. We are also setting "posts" to be an accessible variable in our jade view
+        html: function() {
+          res.render("posts/new", {
+            title: "Create a new post!",
+            tags: tags
+          });
+        },
+        //JSON response will show all posts in JSON format
+        json: function() {
+          res.send(JSON.stringify(tags));
+        }
       });
     }
   });
@@ -95,18 +112,18 @@ exports.onepost = function(req, res, next) {
       res.json(err);
       // return next(err);
     }
-    res.format({
-      html: function() {
-        res.render("posts/single", {
-          post: {
-            title: spost.title,
-            content: spost.content
-          }
-        });
-      },
-      json: function() {
-        res.json(spost);
-      }
+  })
+    .populate("tags")
+    .exec(function(err, post) {
+      res.format({
+        html: function() {
+          res.render("posts/single", {
+            post: post
+          });
+        },
+        json: function() {
+          res.json(spost);
+        }
+      });
     });
-  });
 };

@@ -3,11 +3,15 @@ extends ../layout
 block content
     h1= title
     form(name="addpost", method="post")
-        div.input
-            span.label Title
-            input(type="text", name="title")
-        div.input
-            span.label Content
-            input(type="text", name="content")
+        div.form-group
+            label(for='title') Title
+            input.form-control(type="text", name="title")
+        div.form-group
+            label(for='content') Content
+            input.form-control(type="text", name="content")
+        div.form-group.row
+            for tag in tags
+                input.form-check-input(type="checkbox", name="tag", value="#{tag._id}")
+                label.form-check-label(for='tag') #{tag.type}
         div.actions
             button#btnSubmit(type="submit") submit
