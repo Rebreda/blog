@@ -1,9 +1,12 @@
 extends ../layout
 
 block content
-    h1= post.title
-    p= post.content
+    h1.title= post.title
+  
+    ul.tags
+    for tag in post.tags
+        li.tag= tag.type
+        
+    div
+        p.content= post.content
     
-  for tag in post.tags
-      p= tag.type
-      

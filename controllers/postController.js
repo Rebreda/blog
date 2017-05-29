@@ -32,12 +32,13 @@ exports.postlist = function(req, res, next) {
 
 exports.newpost = function(req, res) {
   // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
+  console.log(req.body);
   var post = new Post({
     title: req.body.title,
     content: req.body.content,
     tag: typeof req.body.tag === "undefined" ? [] : req.body.tag.split(",")
   });
-  console.log(req.body.tag.split(","));
+  // console.log(req.body.tag.split(","));
   //call the create function for our database
   post.save(function(err) {
     if (err) {
@@ -82,10 +83,13 @@ exports.getnewpost = function(req, res, next) {
 
 exports.postnewpost = function(req, res, next) {
   //save post form
-
+  console.log(req.body.tag.toString().split(","));
   var post = new Post({
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    tags: typeof req.body.tag === "undefined"
+      ? []
+      : req.body.tag.toString().split(",")
   });
 
   post.save(function(err) {
@@ -107,7 +111,7 @@ exports.postnewpost = function(req, res, next) {
 exports.onepost = function(req, res, next) {
   var id = req.id;
 
-  Post.findById(id, function(err, spost) {
+  Post.findOne({ _id: id }, function(err, spost) {
     if (err) {
       res.json(err);
       // return next(err);
@@ -115,6 +119,7 @@ exports.onepost = function(req, res, next) {
   })
     .populate("tags")
     .exec(function(err, post) {
+      console.log(post);
       res.format({
         html: function() {
           res.render("posts/single", {
@@ -122,7 +127,7 @@ exports.onepost = function(req, res, next) {
           });
         },
         json: function() {
-          res.json(spost);
+          res.json(post);
         }
       });
     });
