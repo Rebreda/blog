@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+    h1= title
+    div.container.bg-grey
+        div.col-sm-6.col-sm-offset-3
+            form(name="adduser", method="post")
+                div.form-group.input
+                    span.label email
+                    input.form-control(type="text", name="email")
+                div.form-group.input  
+                    span.label Username
+                    input.form-control(type="text", name="username")
+                div.form-group.input
+                    span.label password
+                    input.form-control(type="password", name="password")
+                div.actions
+                    button#btnSubmit.btn.btn-warning.btn-lg(type="submit") submit

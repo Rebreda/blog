@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+    h1= title
+    form(name="loginuser", method="post")
+        div.form-group.input  
+            span.label Username
+            input.form-control(type="text", name="username")
+        div.form-group.input
+            span.label password
+            input.form-control(type="password", name="password")
+        div.actions
+            button#btnSubmit.btn.btn-warning.btn-lg(type="submit") submit
