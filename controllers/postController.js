@@ -1,6 +1,6 @@
-var Post = require("../models/posts");
-var Tag = require("../models/tags");
-var express = require("express"),
+var Post = require("../models/posts"),
+  Tag = require("../models/tags"),
+  express = require("express"),
   router = express.Router(),
   mongoose = require("mongoose"), //mongo connection
   bodyParser = require("body-parser"), //parses information from POST
@@ -32,7 +32,6 @@ exports.postlist = function(req, res, next) {
 
 exports.newpost = function(req, res) {
   // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
-  console.log(req.body);
   var post = new Post({
     title: req.body.title,
     content: req.body.content,
